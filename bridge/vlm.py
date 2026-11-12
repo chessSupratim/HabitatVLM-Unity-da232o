@@ -47,6 +47,9 @@ class VLMClient:
         self.b = settings.backend
         self._client: OpenAI | None = None
         self._json_mode = settings.json_mode
+        self._reasoning = self.b.reasoning_effort
+        self._last_call = 0.0
+        self.paced_s = 0.0      # time the last ask() spent in free-tier pacing (not model latency)
         if self.b.type == "openai":
             self._client = OpenAI(
                 base_url=self.b.base_url,
@@ -81,6 +84,7 @@ class VLMClient:
             },
         ]
 
+        self.paced_s = 0.0
         last_err: Exception | None = None
         for attempt in range(len(BACKOFF_S)):
             try:
@@ -92,6 +96,14 @@ class VLMClient:
                 )
                 if self._json_mode:
                     kwargs["response_format"] = {"type": "json_object"}
+                if self._reasoning:
+                    kwargs["reasoning_effort"] = self._reasoning
+                # free-tier pacing: keep at least min_interval_s between calls
+                gap = self.b.min_interval_s - (time.monotonic() - self._last_call)
+                if gap > 0:
+                    time.sleep(gap)
+                    self.paced_s += gap
+                self._last_call = time.monotonic()
                 resp = self._client.chat.completions.create(**kwargs)
                 text = resp.choices[0].message.content or ""
                 return text
@@ -101,11 +113,29 @@ class VLMClient:
                     log.warning("Backend rejected JSON mode; continuing without it.")
                     self._json_mode = False
                     continue
+                if self._reasoning and "reasoning" in str(e).lower():
+                    log.warning("Backend rejected reasoning_effort=%s; continuing without it.", self._reasoning)
+                    self._reasoning = None
+                    continue
                 raise VLMError(f"Bad request: {e}") from e
             except APIStatusError as e:
                 if e.status_code not in RETRYABLE_STATUS:
                     raise VLMError(f"HTTP {e.status_code}: {e.message}") from e
+                if e.status_code == 429:
+                    # The OpenAI client hides Google's details; read the raw body. A daily
+                    # free-tier limit (quotaId "...PerDay...") cannot be fixed by retrying today.
+                    detail = f"{e} {getattr(e, 'body', '')}"
+                    try:
+                        detail += " " + e.response.text
+                    except Exception:
+                        pass
+                    if "perday" in detail.lower().replace(" ", "") or "per day" in detail.lower():
+                        raise VLMError(f"quota exhausted (HTTP 429): {self.b.model} free-tier daily "
+                                       "request limit reached; resets after midnight Pacific time") from e
                 last_err = e
+                if e.status_code == 429 and self.b.rate_limit_wait_s > 0:
+                    log.warning("Rate limited (429); waiting %ss", self.b.rate_limit_wait_s)
+                    time.sleep(self.b.rate_limit_wait_s)
             except (APIConnectionError, APITimeoutError) as e:
                 last_err = e
             wait = BACKOFF_S[attempt]

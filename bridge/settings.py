@@ -21,6 +21,9 @@ class BackendSettings:
     base_url: str | None = None
     api_key: str | None = None
     timeout_s: float = 30.0
+    reasoning_effort: str | None = None   # e.g. "none" turns Gemini 2.5 Flash "thinking" off
+    min_interval_s: float = 0.0           # pause between calls (free-tier requests-per-minute limit)
+    rate_limit_wait_s: float = 0.0        # extra wait before retrying after HTTP 429
 
 
 @dataclass
@@ -77,6 +80,9 @@ def _resolve_backend(name: str, cfg: dict[str, Any]) -> BackendSettings:
         # Ollama ignores the key, but the OpenAI client requires a non-empty string
         api_key=api_key or "ollama",
         timeout_s=float(b.get("timeout_s", 30)),
+        reasoning_effort=b.get("reasoning_effort"),
+        min_interval_s=float(b.get("min_interval_s", 0) or 0),
+        rate_limit_wait_s=float(b.get("rate_limit_wait_s", 0) or 0),
     )
 
 

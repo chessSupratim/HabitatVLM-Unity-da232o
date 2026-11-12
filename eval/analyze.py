@@ -88,6 +88,8 @@ def main() -> None:
     ap.add_argument("--since", help="only episodes started on/after this ISO date/time")
     ap.add_argument("--latest", action="store_true", help="keep only the last attempt per backend+prompt+task")
     ap.add_argument("--tier", choices=TIERS, help="only tasks of this tier")
+    ap.add_argument("--compare", action="store_true",
+                    help='only the backend-comparison tasks ("compare": true in the task files)')
     a = ap.parse_args()
 
     tasks = load_tasks()
@@ -100,6 +102,8 @@ def main() -> None:
         e["backend"] = f"{e['backend']} · prompt {pv}"
     if a.tier:
         episodes = [e for e in episodes if tasks[e["task_id"]]["tier"] == a.tier]
+    if a.compare:
+        episodes = [e for e in episodes if tasks[e["task_id"]].get("compare")]
     if a.latest:
         last = {}
         for e in sorted(episodes, key=lambda e: e["started"]):
@@ -125,7 +129,8 @@ def main() -> None:
     # ---------------------------------------------------------------- summary per backend
     lines = ["# HabitatVLM results", ""]
     lines.append(f"Episodes: {len(episodes)}  ·  tasks: {len({e['task_id'] for e in episodes})}  ·  "
-                 f"filter: {'since ' + a.since if a.since else 'all'}{', latest attempt only' if a.latest else ''}")
+                 f"filter: {'since ' + a.since if a.since else 'all'}{', latest attempt only' if a.latest else ''}"
+                 f"{', comparison set only' if a.compare else ''}")
     lines += ["", "## Summary by backend", "",
               "| Backend | Model | Episodes | Success | Easy | Medium | Hard | Avg steps (successes) | Avg model latency / step | Invalid replies |",
               "|---|---|---|---|---|---|---|---|---|---|"]
@@ -212,6 +217,14 @@ def make_charts(backends: list[str], summary: dict) -> None:
 
     charts = OUT / "charts"
     charts.mkdir(parents=True, exist_ok=True)
+    # At most one bar per fixed palette colour (never cycle colours). Drop the mock backend, then
+    # keep the latest backend/prompt combinations; the full list stays in the results.md tables.
+    real = [b for b in backends if not b.startswith("mock")] or backends
+    if len(real) > len(SERIES):
+        print(f"Charts: {len(real)} backend/prompt combinations, showing the last {len(SERIES)} "
+              f"(use --since or --compare to choose); all are in results.md.")
+        real = sorted(real, key=lambda b: b.split("prompt ")[-1])[-len(SERIES):]
+    backends = real
     specs = [
         ("success_by_tier.png", "Task success rate by difficulty", "Success rate (%)", 0, lambda v: f"{v:.0f}%", (0, 105), "not run"),
         ("steps_by_tier.png", "Average steps used on successful tasks", "Steps", 1, lambda v: f"{v:.1f}", None, "no successes"),
@@ -229,7 +242,7 @@ def make_charts(backends: list[str], summary: dict) -> None:
             bars = ax.bar(xs, hs, width=width, color=SERIES[i], edgecolor=SURFACE, linewidth=2,
                           label=b, zorder=3)
             for bar, v in zip(bars, vals):
-                ax.annotate(fmt(v) if v is not None else empty,
+                ax.annotate(fmt(v) if v is not None else ("–" if n > 2 else empty),
                             (bar.get_x() + bar.get_width() / 2, bar.get_height()),
                             xytext=(0, 3), textcoords="offset points", ha="center",
                             fontsize=9, color=INK2)
@@ -244,7 +257,8 @@ def make_charts(backends: list[str], summary: dict) -> None:
         ax.spines["bottom"].set_color(GRID)
         ax.tick_params(colors=INK2, length=0)
         if n >= 2:
-            ax.legend(frameon=False, labelcolor=INK, loc="upper right", ncols=n)
+            ax.legend(frameon=False, labelcolor=INK, loc="upper center", bbox_to_anchor=(0.5, -0.12),
+                      ncols=min(n, 2), fontsize=9)
         fig.tight_layout()
         fig.savefig(charts / fname, facecolor=SURFACE)
         plt.close(fig)

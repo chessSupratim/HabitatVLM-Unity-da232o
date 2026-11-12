@@ -102,7 +102,11 @@ To test without a model, first run `$env:VLM_BACKEND="mock"` (PowerShell) or `se
 
 Scope (9 Nov): Kaggle (B) + Gemini (C) only; no local model, no Groq.
 - [x] `GEMINI_API_KEY` in `bridge/.env`; key verified (HTTP 200); `gemini-2.5-flash` available (newer Flash models also listed).
-- [ ] Start bridge with `$env:VLM_BACKEND="gemini"` (or set `active_backend: gemini`) → run T01, T03, T04 → compare with Kaggle.
+- [x] Free-tier prep (12 Nov): `reasoning_effort: none` (Gemini 2.5 Flash thinking off: faster, can't eat the 300-token budget), `min_interval_s: 7` pacing (excluded from logged latency), 20 s wait after a per-minute 429, daily-quota 429 fails fast with a clear message. Probe with a real room-06 frame: valid `move_to(bed)` in ~3.5 s; "open the door" -> `done` with "CANNOT:".
+- [x] Comparison set: 8 room-01 tasks marked `"compare": true` (T03, T12, T04, T06, T16, T07, T19, T21; 2 easy / 3 medium / 3 hard, incl. colour references) - panel Suite row "compare"; `eval/analyze.py --compare --latest`. About 50 Gemini calls, fits the free daily quota.
+- [x] First Gemini runs (12 Nov, 20:35): G01, S01–S04 all succeeded (5/5) in 2–5 steps; median model latency 2.4 s/step vs 4.0 s for Qwen on Kaggle; Gemini skipped Qwen's usual out-of-reach `pick` first step. Kaggle v3.4 room_04 suite: 9/9.
+- [x] Finding: **gemini-2.5-flash free tier = 20 requests/day per project per model** (Google 429 `GenerateRequestsPerDayPerProjectPerModel-FreeTier`, limit 20). Exhausted after ~22 calls in S05. Bridge now detects this from the raw 429 body and fails in <1 s (was 3 retries x 25 s per step).
+- [ ] Gemini comparison: needs ~50 calls -> paid tier (a few cents) or split over 3 days (or reduce the compare set).
 - [ ] Optionally try a newer Flash model (e.g. `gemini-3.5-flash`) if 2.5 struggles; watch the free-tier daily limit.
 - [ ] Robustness: confirm Unity handles `look_around` fallbacks / `meta.valid=false` (bridge side already tested).
 - [ ] Commit.

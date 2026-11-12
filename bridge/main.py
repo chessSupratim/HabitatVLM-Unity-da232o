@@ -215,11 +215,11 @@ def step(req: StepReq):
         try:
             raw = vlm.ask(jpeg, SYSTEM_PROMPT, prompt, step=req.step)
         except VLMError as e:
-            latency_ms += int((time.perf_counter() - t0) * 1000)
+            latency_ms += int((time.perf_counter() - t0 - vlm.paced_s) * 1000)
             error = f"backend error: {e}"
             log.error("Step %s/%d: %s", ep.id, req.step, error)
             break  # retrying the prompt won't fix a dead backend
-        latency_ms += int((time.perf_counter() - t0) * 1000)
+        latency_ms += int((time.perf_counter() - t0 - vlm.paced_s) * 1000)   # pacing pause excluded
         try:
             cmd = validate(raw, ep.object_kinds)
             error = None
