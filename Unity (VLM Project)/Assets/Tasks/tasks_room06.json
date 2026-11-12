@@ -1,0 +1,31 @@
+{
+  "room": "room_06",
+  "tasks": [
+    { "id": "R01", "tier": "easy", "task": "Open the storage tub",
+      "success": { "type": "container_state", "target": "storage_tub", "state": "open" } },
+    { "id": "R02", "tier": "easy", "task": "Pick up the alarm clock",
+      "success": { "type": "holding", "object": "alarm_clock" } },
+    { "id": "R03", "tier": "easy", "task": "Open the dresser",
+      "success": { "type": "container_state", "target": "dresser", "state": "open" } },
+
+    { "id": "R04", "tier": "medium", "task": "Put the alarm clock on the bed",
+      "success": { "type": "item_on", "object": "alarm_clock", "location": "bed" } },
+    { "id": "R05", "tier": "medium", "task": "Take the red book out of the basket and put it on the bed",
+      "success": { "type": "item_on", "object": "red_book", "location": "bed" } },
+    { "id": "R06", "tier": "medium", "task": "Put the grey pillow in the storage tub",
+      "success": { "type": "item_in", "object": "grey_pillow", "location": "storage_tub" } },
+
+    { "id": "R07", "tier": "hard", "task": "Put the alarm clock and the small plant in the wicker basket",
+      "success": { "type": "all", "conditions": [
+        { "type": "item_in", "object": "alarm_clock", "location": "wicker_basket" },
+        { "type": "item_in", "object": "small_plant", "location": "wicker_basket" } ] } },
+    { "id": "R08", "tier": "hard", "task": "Put the white pillow in the storage tub and close the lid",
+      "success": { "type": "all", "conditions": [
+        { "type": "item_in", "object": "white_pillow", "location": "storage_tub" },
+        { "type": "container_state", "target": "storage_tub", "state": "closed" } ] } },
+    { "id": "R09", "tier": "hard", "task": "Put the small plant in the dresser and close it",
+      "success": { "type": "all", "conditions": [
+        { "type": "item_in", "object": "small_plant", "location": "dresser" },
+        { "type": "container_state", "target": "dresser", "state": "closed" } ] } }
+  ]
+}

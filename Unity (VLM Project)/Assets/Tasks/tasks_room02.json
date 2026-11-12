@@ -1,0 +1,29 @@
+{
+  "room": "room_02",
+  "tasks": [
+    { "id": "B01", "tier": "easy", "task": "Pick up the oxygen tank",
+      "success": { "type": "holding", "object": "oxygen_tank" } },
+    { "id": "B02", "tier": "easy", "task": "Open the teal locker",
+      "success": { "type": "container_state", "target": "teal_locker", "state": "open" } },
+    { "id": "B03", "tier": "easy", "task": "Pick up the medkit",
+      "success": { "type": "holding", "object": "medkit" } },
+
+    { "id": "B04", "tier": "medium", "task": "Put the battery pack on the workbench",
+      "success": { "type": "item_on", "object": "battery_pack", "location": "workbench" } },
+    { "id": "B05", "tier": "medium", "task": "Put the medkit in the magenta locker",
+      "success": { "type": "item_in", "object": "medkit", "location": "magenta_locker" } },
+    { "id": "B06", "tier": "medium", "task": "Take the sealant can out of the teal locker",
+      "success": { "type": "holding", "object": "sealant_can" } },
+
+    { "id": "B07", "tier": "hard", "task": "Put the oxygen tank and the spare filter on the workbench",
+      "success": { "type": "all", "conditions": [
+        { "type": "item_on", "object": "oxygen_tank", "location": "workbench" },
+        { "type": "item_on", "object": "spare_filter", "location": "workbench" } ] } },
+    { "id": "B08", "tier": "hard", "task": "Put the medkit in the teal locker and close it",
+      "success": { "type": "all", "conditions": [
+        { "type": "item_in", "object": "medkit", "location": "teal_locker" },
+        { "type": "container_state", "target": "teal_locker", "state": "closed" } ] } },
+    { "id": "B09", "tier": "hard", "task": "Move the sealant can from the teal locker to the taller rack",
+      "success": { "type": "item_on", "object": "sealant_can", "location": "tall_rack" } }
+  ]
+}

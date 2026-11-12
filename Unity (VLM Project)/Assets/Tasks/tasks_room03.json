@@ -1,0 +1,31 @@
+{
+  "room": "room_03",
+  "tasks": [
+    { "id": "L01", "tier": "easy", "task": "Pick up the magenta tube",
+      "success": { "type": "holding", "object": "magenta_tube" } },
+    { "id": "L02", "tier": "easy", "task": "Open the sample fridge",
+      "success": { "type": "container_state", "target": "sample_fridge", "state": "open" } },
+    { "id": "L03", "tier": "easy", "task": "Pick up the blue box",
+      "success": { "type": "holding", "object": "specimen_box" } },
+
+    { "id": "L04", "tier": "medium", "task": "Put the lime tube on the side table",
+      "success": { "type": "item_on", "object": "lime_tube", "location": "side_table" } },
+    { "id": "L05", "tier": "medium", "task": "Put the specimen box in the yellow cabinet",
+      "success": { "type": "item_in", "object": "specimen_box", "location": "storage_cabinet" } },
+    { "id": "L06", "tier": "medium", "task": "Take the amber bottle out of the fridge",
+      "success": { "type": "holding", "object": "amber_bottle" } },
+
+    { "id": "L07", "tier": "hard", "task": "Put both tubes in the yellow cabinet",
+      "success": { "type": "all", "conditions": [
+        { "type": "item_in", "object": "magenta_tube", "location": "storage_cabinet" },
+        { "type": "item_in", "object": "lime_tube", "location": "storage_cabinet" } ] } },
+    { "id": "L08", "tier": "hard", "task": "Put the amber bottle on the lab bench and close the fridge",
+      "success": { "type": "all", "conditions": [
+        { "type": "item_on", "object": "amber_bottle", "location": "lab_bench" },
+        { "type": "container_state", "target": "sample_fridge", "state": "closed" } ] } },
+    { "id": "L09", "tier": "hard", "task": "Put the magenta tube in the sample fridge and close it",
+      "success": { "type": "all", "conditions": [
+        { "type": "item_in", "object": "magenta_tube", "location": "sample_fridge" },
+        { "type": "container_state", "target": "sample_fridge", "state": "closed" } ] } }
+  ]
+}

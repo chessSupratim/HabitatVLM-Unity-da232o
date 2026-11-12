@@ -1,0 +1,75 @@
+{
+  "room": "room_01",
+  "tasks": [
+    { "id": "T01", "tier": "easy", "task": "Open the left cabinet",
+      "success": { "type": "container_state", "target": "cabinet_left", "state": "open" } },
+    { "id": "T02", "tier": "easy", "task": "Open the right cabinet",
+      "success": { "type": "container_state", "target": "cabinet_right", "state": "open" } },
+    { "id": "T03", "compare": true, "tier": "easy", "task": "Pick up the blue canister",
+      "success": { "type": "holding", "object": "blue_canister" } },
+    { "id": "T09", "tier": "easy", "task": "Pick up the red canister",
+      "success": { "type": "holding", "object": "red_canister" } },
+    { "id": "T10", "tier": "easy", "task": "Pick up the green canister",
+      "success": { "type": "holding", "object": "green_canister" } },
+    { "id": "T11", "tier": "easy", "task": "Pick up the toolbox",
+      "success": { "type": "holding", "object": "toolbox" } },
+    { "id": "T12", "compare": true, "tier": "easy", "task": "Open the purple cabinet",
+      "success": { "type": "container_state", "target": "cabinet_left", "state": "open" } },
+    { "id": "T13", "tier": "easy", "task": "Pick up the canister that is on the table",
+      "success": { "type": "holding", "object": "green_canister" } },
+
+    { "id": "T04", "compare": true, "tier": "medium", "task": "Put the red canister in the left cabinet",
+      "success": { "type": "item_in", "object": "red_canister", "location": "cabinet_left" } },
+    { "id": "T05", "tier": "medium", "task": "Put the toolbox on the shelf",
+      "success": { "type": "item_on", "object": "toolbox", "location": "shelf_a" } },
+    { "id": "T06", "compare": true, "tier": "medium", "task": "Move the green canister from the table to the shelf",
+      "success": { "type": "item_on", "object": "green_canister", "location": "shelf_a" } },
+    { "id": "T14", "tier": "medium", "task": "Put the blue canister on the table",
+      "success": { "type": "item_on", "object": "blue_canister", "location": "table" } },
+    { "id": "T15", "tier": "medium", "task": "Put the blue canister in the right cabinet",
+      "success": { "type": "item_in", "object": "blue_canister", "location": "cabinet_right" } },
+    { "id": "T16", "compare": true, "tier": "medium", "task": "Put the toolbox in the orange cabinet",
+      "success": { "type": "item_in", "object": "toolbox", "location": "cabinet_right" } },
+    { "id": "T17", "tier": "medium", "task": "Open both cabinets",
+      "success": { "type": "all", "conditions": [
+        { "type": "container_state", "target": "cabinet_left", "state": "open" },
+        { "type": "container_state", "target": "cabinet_right", "state": "open" } ] } },
+    { "id": "T18", "tier": "medium", "task": "Put the red canister on the table",
+      "success": { "type": "item_on", "object": "red_canister", "location": "table" } },
+
+    { "id": "T07", "compare": true, "tier": "hard", "task": "Put the green canister in the right cabinet and close it",
+      "success": { "type": "all", "conditions": [
+        { "type": "item_in", "object": "green_canister", "location": "cabinet_right" },
+        { "type": "container_state", "target": "cabinet_right", "state": "closed" } ] } },
+    { "id": "T08", "tier": "hard", "task": "Put the red and blue canisters in the right cabinet",
+      "success": { "type": "all", "conditions": [
+        { "type": "item_in", "object": "red_canister", "location": "cabinet_right" },
+        { "type": "item_in", "object": "blue_canister", "location": "cabinet_right" } ] } },
+    { "id": "T19", "compare": true, "tier": "hard", "task": "Put the red canister in the left cabinet and the blue canister in the right cabinet",
+      "success": { "type": "all", "conditions": [
+        { "type": "item_in", "object": "red_canister", "location": "cabinet_left" },
+        { "type": "item_in", "object": "blue_canister", "location": "cabinet_right" } ] } },
+    { "id": "T20", "tier": "hard", "task": "Put the toolbox in the left cabinet and close it",
+      "success": { "type": "all", "conditions": [
+        { "type": "item_in", "object": "toolbox", "location": "cabinet_left" },
+        { "type": "container_state", "target": "cabinet_left", "state": "closed" } ] } },
+    { "id": "T21", "compare": true, "tier": "hard", "task": "Move both canisters from the shelf to the table",
+      "success": { "type": "all", "conditions": [
+        { "type": "item_on", "object": "red_canister", "location": "table" },
+        { "type": "item_on", "object": "blue_canister", "location": "table" } ] } },
+    { "id": "T22", "tier": "hard", "task": "Put the toolbox in the right cabinet and the green canister on the shelf",
+      "success": { "type": "all", "conditions": [
+        { "type": "item_in", "object": "toolbox", "location": "cabinet_right" },
+        { "type": "item_on", "object": "green_canister", "location": "shelf_a" } ] } },
+    { "id": "T23", "tier": "hard", "task": "Put the red, blue and green canisters in the left cabinet",
+      "success": { "type": "all", "conditions": [
+        { "type": "item_in", "object": "red_canister", "location": "cabinet_left" },
+        { "type": "item_in", "object": "blue_canister", "location": "cabinet_left" },
+        { "type": "item_in", "object": "green_canister", "location": "cabinet_left" } ] } },
+    { "id": "T24", "tier": "hard", "task": "Put the red canister in the left cabinet and make sure both cabinets are closed",
+      "success": { "type": "all", "conditions": [
+        { "type": "item_in", "object": "red_canister", "location": "cabinet_left" },
+        { "type": "container_state", "target": "cabinet_left", "state": "closed" },
+        { "type": "container_state", "target": "cabinet_right", "state": "closed" } ] } }
+  ]
+}

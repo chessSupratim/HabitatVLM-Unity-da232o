@@ -1,0 +1,19 @@
+{
+  "room": "room_03",
+  "title": "Science lab",
+  "width": 8, "depth": 8, "height": 3,
+  "floorColor": "#2f3a40", "wallColor": "#e6ecef",
+  "robot": [2.5, -2.5, 0, 0],
+  "tasks": "Assets/Tasks/tasks_room03.json",
+  "objects": [
+    { "name": "lab_bench",        "type": "surface",   "pos": [-1.5, 0.5],  "size": [2.0, 0.9, 0.8],  "color": "#b8bec4" },
+    { "name": "side_table",       "type": "surface",   "pos": [-3.0, -2.6], "size": [0.8, 0.75, 0.8], "color": "#b8bec4" },
+    { "name": "sample_fridge",    "type": "container", "pos": [1.5, 3.55],  "facing": "south", "size": [0.9, 1.8, 0.7], "color": "#c9ced3", "doorColor": "#f5f7f8" },
+    { "name": "storage_cabinet",  "type": "container", "pos": [3.55, -0.5], "facing": "west",  "size": [1.0, 1.5, 0.6], "color": "#c9ced3", "doorColor": "#f0c419" },
+
+    { "name": "magenta_tube",     "type": "item", "shape": "cylinder", "on": "lab_bench",     "pos": [-2.1, 0.5],  "size": [0.12, 0.28, 0.12], "color": "#d61f9b" },
+    { "name": "lime_tube",        "type": "item", "shape": "cylinder", "on": "lab_bench",     "pos": [-1.5, 0.5],  "size": [0.12, 0.28, 0.12], "color": "#8fd61f" },
+    { "name": "specimen_box",     "type": "item", "shape": "cube",     "on": "side_table",    "pos": [-3.0, -2.6], "size": [0.3, 0.2, 0.3],    "color": "#3a7bd5" },
+    { "name": "amber_bottle",     "type": "item", "shape": "cylinder", "on": "sample_fridge", "size": [0.15, 0.3, 0.15], "color": "#b5651d" }
+  ]
+}

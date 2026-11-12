@@ -1,0 +1,31 @@
+{
+  "room": "room_05",
+  "tasks": [
+    { "id": "S01", "tier": "easy", "task": "Pick up the pencil cup",
+      "success": { "type": "holding", "object": "pencil_cup" } },
+    { "id": "S02", "tier": "easy", "task": "Pick up the plant",
+      "success": { "type": "holding", "object": "potted_plant" } },
+    { "id": "S03", "tier": "easy", "task": "Take the towel out of the laundry basket",
+      "success": { "type": "holding", "object": "towel" } },
+
+    { "id": "S04", "tier": "medium", "task": "Put the books in the laundry basket",
+      "success": { "type": "item_in", "object": "books", "location": "laundry_basket" } },
+    { "id": "S05", "tier": "medium", "task": "Put the parcel on the desk",
+      "success": { "type": "item_on", "object": "parcel", "location": "desk" } },
+    { "id": "S06", "tier": "medium", "task": "Put the pencil cup on the big box",
+      "success": { "type": "item_on", "object": "pencil_cup", "location": "big_box" } },
+
+    { "id": "S07", "tier": "hard", "task": "Put the plant and the books in the laundry basket",
+      "success": { "type": "all", "conditions": [
+        { "type": "item_in", "object": "potted_plant", "location": "laundry_basket" },
+        { "type": "item_in", "object": "books", "location": "laundry_basket" } ] } },
+    { "id": "S08", "tier": "hard", "task": "Put the towel on the desk and the pencil cup in the laundry basket",
+      "success": { "type": "all", "conditions": [
+        { "type": "item_on", "object": "towel", "location": "desk" },
+        { "type": "item_in", "object": "pencil_cup", "location": "laundry_basket" } ] } },
+    { "id": "S09", "tier": "hard", "task": "Move the parcel to the desk and put the books on the big box",
+      "success": { "type": "all", "conditions": [
+        { "type": "item_on", "object": "parcel", "location": "desk" },
+        { "type": "item_on", "object": "books", "location": "big_box" } ] } }
+  ]
+}

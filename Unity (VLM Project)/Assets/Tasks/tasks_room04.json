@@ -1,0 +1,31 @@
+{
+  "room": "room_04",
+  "tasks": [
+    { "id": "G01", "tier": "easy", "task": "Open the fridge",
+      "success": { "type": "container_state", "target": "fridge", "state": "open" } },
+    { "id": "G02", "tier": "easy", "task": "Pick up the water bottle",
+      "success": { "type": "holding", "object": "water_bottle" } },
+    { "id": "G03", "tier": "easy", "task": "Pick up the red mug",
+      "success": { "type": "holding", "object": "red_mug" } },
+
+    { "id": "G04", "tier": "medium", "task": "Put the mug on the counter",
+      "success": { "type": "item_on", "object": "red_mug", "location": "counter" } },
+    { "id": "G05", "tier": "medium", "task": "Put the orange food pack on the dining table",
+      "success": { "type": "item_on", "object": "food_pack", "location": "dining_table" } },
+    { "id": "G06", "tier": "medium", "task": "Take the juice pouch out of the fridge",
+      "success": { "type": "holding", "object": "juice_pouch" } },
+
+    { "id": "G07", "tier": "hard", "task": "Put the food pack and the water bottle in the pantry",
+      "success": { "type": "all", "conditions": [
+        { "type": "item_in", "object": "food_pack", "location": "pantry" },
+        { "type": "item_in", "object": "water_bottle", "location": "pantry" } ] } },
+    { "id": "G08", "tier": "hard", "task": "Put the juice pouch on the dining table and close the fridge",
+      "success": { "type": "all", "conditions": [
+        { "type": "item_on", "object": "juice_pouch", "location": "dining_table" },
+        { "type": "container_state", "target": "fridge", "state": "closed" } ] } },
+    { "id": "G09", "tier": "hard", "task": "Put the red mug in the pantry and close it",
+      "success": { "type": "all", "conditions": [
+        { "type": "item_in", "object": "red_mug", "location": "pantry" },
+        { "type": "container_state", "target": "pantry", "state": "closed" } ] } }
+  ]
+}
